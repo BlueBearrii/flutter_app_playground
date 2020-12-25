@@ -7,11 +7,14 @@ class Geolocation extends StatefulWidget {
 }
 
 class _GeolocationState extends State<Geolocation> {
-  bool isButtonDisable = false;
   double kxLatitude = 13.7204;
   double kxLongtitude = 100.4983;
   double _currentLatitude;
   double _currentLongtitude;
+
+  // Get value from database
+  bool _checkInStatus = false;
+  int _checkInCount = 2;
 
   /// Determine the current position of the device.
   ///
@@ -67,8 +70,25 @@ class _GeolocationState extends State<Geolocation> {
     // Use server time to protect cheat time in mobile
     var now = TimeOfDay.now();
     print(now);
-    if (now.hour.toInt() >= 18) print("Check out on time");
-    if (now.hour.toInt() < 18) print("Check out before time");
+    _buttonAttentionState();
+  }
+
+  void _buttonAttentionState() {
+    if (!_checkInStatus) {
+      setState(() {
+        _checkInStatus = true;
+        _checkInCount = _checkInCount - 1;
+      });
+
+      print(_checkInCount);
+    } else {
+      setState(() {
+        _checkInStatus = false;
+        _checkInCount = _checkInCount - 1;
+      });
+
+      print(_checkInCount);
+    }
   }
 
   @override
@@ -89,11 +109,13 @@ class _GeolocationState extends State<Geolocation> {
                     RaisedButton(
                       onPressed:
                           _checkCurrentLocationForAllowButton(snapshot.data)
-                              ? () {
-                                  _workplaceAttention();
-                                }
+                              ? _checkInCount != 0
+                                  ? () {
+                                      _workplaceAttention();
+                                    }
+                                  : null
                               : null,
-                      child: Text("Check-In"),
+                      child: Text(_checkInStatus ? "Check Out" : "Check In"),
                     )
                   ],
                 ));
