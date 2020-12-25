@@ -69,7 +69,7 @@ class _GeolocationState extends State<Geolocation> {
   void _workplaceAttention() {
     // Use server time to protect cheat time in mobile
     var now = TimeOfDay.now();
-    print(now);
+    print("Time : $now");
     _buttonAttentionState();
   }
 
@@ -87,7 +87,7 @@ class _GeolocationState extends State<Geolocation> {
         _checkInCount = _checkInCount - 1;
       });
 
-      print(_checkInCount);
+      print("Check in count balance : $_checkInCount");
     }
   }
 
