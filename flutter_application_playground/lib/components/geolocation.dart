@@ -65,6 +65,14 @@ class _GeolocationState extends State<Geolocation> {
       return true;
   }
 
+  void _workplaceAttention() {
+    // Use server time to protect cheat time in mobile
+    var now = TimeOfDay.now();
+    print(now);
+    if (now.hour.toInt() >= 18) print("Check out on time");
+    if (now.hour.toInt() < 18) print("Check out before time");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -84,7 +92,7 @@ class _GeolocationState extends State<Geolocation> {
                       onPressed:
                           _checkCurrentLocationForAllowButton(snapshot.data)
                               ? () {
-                                  print("On-time");
+                                  _workplaceAttention();
                                 }
                               : null,
                       child: Text("Check-In"),
