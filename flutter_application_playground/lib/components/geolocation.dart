@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -7,6 +9,12 @@ class Geolocation extends StatefulWidget {
 }
 
 class _GeolocationState extends State<Geolocation> {
+  bool isButtonDisable = false;
+  double kxLatitude = 13.7204;
+  double kxLongtitude = 100.4983;
+  double _currentLatitude;
+  double _currentLongtitude;
+
   /// Determine the current position of the device.
   ///
   /// When the location services are not enabled or permissions
@@ -35,7 +43,26 @@ class _GeolocationState extends State<Geolocation> {
       }
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition().then((value) {
+      //print("Latitude : ${value.latitude}");
+      //print("Longtitude : ${value.longitude}");
+      _currentLatitude = value.latitude;
+      _currentLongtitude = value.longitude;
+
+      return value;
+    });
+  }
+
+  bool _checkCurrentLocationForAllowButton(data) {
+    //print("_Current Position : ${double.parse(_currentLatitude.toStringAsFixed(4))} vs ${double.parse(kxLatitude.toStringAsFixed(4))}");
+    //print("_Current Position : ${double.parse(_currentLongtitude.toStringAsFixed(4))} vs ${double.parse(kxLongtitude.toStringAsFixed(4))}");
+    if (double.parse(_currentLatitude.toStringAsFixed(3)) !=
+            double.parse(kxLatitude.toStringAsFixed(3)) &&
+        double.parse(_currentLongtitude.toStringAsFixed(3)) !=
+            double.parse(kxLongtitude.toStringAsFixed(3)))
+      return false;
+    else
+      return true;
   }
 
   @override
@@ -45,11 +72,25 @@ class _GeolocationState extends State<Geolocation> {
           body: FutureBuilder(
         future: _determinePosition(),
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.connectionState == ConnectionState.done)
-            return Center(
-              child: Container(child: Text("${snapshot.data}")),
-            );
+            return Container(
+                height: double.infinity,
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("${snapshot.data}"),
+                    RaisedButton(
+                      onPressed:
+                          _checkCurrentLocationForAllowButton(snapshot.data)
+                              ? () {
+                                  print("On-time");
+                                }
+                              : null,
+                      child: Text("Check-In"),
+                    )
+                  ],
+                ));
           else if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: Container(child: CircularProgressIndicator()),
