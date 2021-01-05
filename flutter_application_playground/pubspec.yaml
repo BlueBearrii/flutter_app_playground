@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.0
   geolocator: ^6.1.13
+  image_picker: ^0.6.7+17
+  video_player: ^1.0.1
 
 dev_dependencies:
   flutter_test:
