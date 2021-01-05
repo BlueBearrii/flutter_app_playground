@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_playground/components/camera.dart';
 import 'package:flutter_application_playground/components/geolocation.dart';
+import 'package:flutter_application_playground/components/own_my_camera.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(OwnMyCamera());
 }
 
 class App extends StatelessWidget {
