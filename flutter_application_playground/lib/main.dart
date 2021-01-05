@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_playground/components/camera.dart';
 import 'package:flutter_application_playground/components/geolocation.dart';
 
 void main() {
-  runApp(Geolocation());
+  runApp(MyApp());
 }
 
 class App extends StatelessWidget {
